@@ -2,7 +2,7 @@ import Items from '../components/Items';
 
 // import PropTypes from 'prop-types';
 
-const index = props => {
+const shop = props => {
     return (
         <div>
             <Items></Items>
@@ -10,8 +10,8 @@ const index = props => {
     );
 };
 
-index.propTypes = {
+shop.propTypes = {
     
 };
 
-export default index;
+export default shop;

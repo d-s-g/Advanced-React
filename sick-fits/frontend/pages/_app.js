@@ -1,6 +1,8 @@
-import React from 'react'
-import App, {Container} from 'next/app'
-import Page from './Page'
+import React from 'react';
+import App, {Container} from 'next/app';
+import Page from './Page';
+import { ApolloProvider } from 'react-apollo';
+import withData from '../lib/withData';
 
 class MyApp extends App {
   // Only uncomment this method if you have blocking data requirements for
@@ -8,23 +10,28 @@ class MyApp extends App {
   // perform automatic static optimization, causing every page in your app to
   // be server-side rendered.
   //
-  // static async getInitialProps(appContext) {
-  //   // calls page's `getInitialProps` and fills `appProps.pageProps`
-  //   const appProps = await App.getInitialProps(appContext);
-  //
-  //   return { ...appProps }
-  // }
+  static async getInitialProps( {Component, ctx} ) {
+    let pageProps = {};
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+  
+    pageProps.query = ctx.query;
+    return { pageProps };
+  }
 
   render() {
-    const { Component } = this.props
+    const { Component, apollo, pageProps } = this.props
     return (
         <Container>
+          <ApolloProvider client={ apollo }>
             <Page>
-                <Component />
+                <Component {...pageProps} />
             </Page>
+          </ApolloProvider>
         </Container>
     )
   }
 }
 
-export default MyApp
+export default withData(MyApp);
