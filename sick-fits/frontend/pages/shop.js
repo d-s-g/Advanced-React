@@ -5,7 +5,7 @@ import Items from '../components/Items';
 const shop = props => {
     return (
         <div>
-            <Items></Items>
+             <Items page={parseFloat(props.query.page) || 1} />
         </div>
     );
 };
